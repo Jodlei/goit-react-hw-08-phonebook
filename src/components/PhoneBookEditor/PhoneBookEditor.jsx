@@ -19,6 +19,8 @@ export const PhoneBookEditor = () => {
     const name = form.elements.name.value;
     const phone = form.elements.phone.value;
 
+    // 1
+
     if (
       contacts.map(item => item.name.toLowerCase()).includes(name.toLowerCase())
     ) {
