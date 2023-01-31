@@ -6,7 +6,7 @@ import {
   getIsLoading,
   getContactsFilter,
 } from 'redux/contacts/selectors';
-import { Typography, Button, Container } from '@mui/material';
+import { Button } from '@mui/material';
 import { Loader } from 'components/Loader/Loader';
 
 import {
