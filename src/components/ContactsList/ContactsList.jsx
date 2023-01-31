@@ -1,12 +1,12 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteContact } from 'redux/operations';
+import { useEffect } from 'react';
+import { deleteContact, fetchContacts } from 'redux/contacts/operations';
 import {
   getContacts,
-  getError,
   getIsLoading,
   getContactsFilter,
-} from 'redux/selectors';
-
+} from 'redux/contacts/selectors';
+import { Typography, Button, Container } from '@mui/material';
 import { Loader } from 'components/Loader/Loader';
 
 import {
@@ -14,7 +14,6 @@ import {
   ContactItem,
   NameValue,
   PhoneValue,
-  DeleteButton,
 } from './ContactsList.styled';
 
 export const ContactsList = () => {
@@ -23,7 +22,10 @@ export const ContactsList = () => {
   const contacts = useSelector(getContacts);
   const filterValue = useSelector(getContactsFilter);
   const isLoading = useSelector(getIsLoading);
-  const error = useSelector(getError);
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
   const getVisibleContacts = () => {
     return contacts.filter(({ name }) =>
@@ -39,18 +41,27 @@ export const ContactsList = () => {
 
   return (
     <>
-      {error && <p>Try again later</p>}
       {isLoading && <Loader />}
-      {!isLoading && !error && (
+      {!isLoading && (
         <ContactList>
-          {visibleContacts.map(({ id, name, phone }) => {
+          {visibleContacts.map(({ id, name, number }) => {
             return (
               <ContactItem key={id}>
                 <NameValue>{name}</NameValue>
-                <PhoneValue>{phone}</PhoneValue>
-                <DeleteButton type="button" onClick={() => handleDelete(id)}>
+                <PhoneValue>{number}</PhoneValue>
+                <Button
+                  type="button"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  sx={{
+                    marginLeft: '10px',
+                    width: '200px',
+                  }}
+                  onClick={() => handleDelete(id)}
+                >
                   Delete contact
-                </DeleteButton>
+                </Button>
               </ContactItem>
             );
           })}

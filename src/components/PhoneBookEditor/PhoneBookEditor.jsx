@@ -1,13 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/operations';
-import { getContacts } from 'redux/selectors';
+import { addContact } from 'redux/contacts/operations';
+import { getContacts } from 'redux/contacts/selectors';
+import { Button, TextField, Typography, Container } from '@mui/material';
+import styled from 'styled-components';
 
-import {
-  Label,
-  Input,
-  PhoneBookForm,
-  SubmitButton,
-} from './PhoneBookEditor.styled';
+const Form = styled.form`
+  width: 320px;
+`;
 
 export const PhoneBookEditor = () => {
   const dispatch = useDispatch();
@@ -17,43 +16,59 @@ export const PhoneBookEditor = () => {
     event.preventDefault();
     const form = event.target;
     const name = form.elements.name.value;
-    const phone = form.elements.phone.value;
-
-    // 1
+    const number = form.elements.phone.value;
 
     if (
       contacts.map(item => item.name.toLowerCase()).includes(name.toLowerCase())
     ) {
       alert(name + 'is already in contacts!');
     } else {
-      dispatch(addContact({ name, phone }));
+      dispatch(addContact({ name, number }));
     }
     form.reset();
   };
 
   return (
-    <PhoneBookForm onSubmit={handleSubmit}>
-      <Label htmlFor="name">
-        Name
-        <Input
-          type="text"
+    <Container
+      component="section"
+      maxWidth="xs"
+      sx={{
+        marginTop: '64px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+    >
+      <Typography component="h5" variant="h5">
+        Your contacts
+      </Typography>
+
+      <Form onSubmit={handleSubmit} autoComplete="off">
+        <TextField
+          variant="outlined"
+          margin="normal"
+          fullWidth
+          id="name"
+          label="Name"
           name="name"
-          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-          title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-          required
+          autoComplete="name"
+          autoFocus
         />
-      </Label>
-      <Label htmlFor="phone">
-        Number
-        <Input
+        <TextField
+          variant="outlined"
+          margin="normal"
+          fullWidth
+          name="Number"
+          label="Number"
           type="tel"
-          name="phone"
-          pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-          title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-          required
+          id="phone"
+          autoComplete="current-password"
         />
-      </Label>
-      <SubmitButton type="submit">Add contact</SubmitButton>
-    </PhoneBookForm>
+
+        <Button type="submit" fullWidth variant="contained" color="primary">
+          Add contact
+        </Button>
+      </Form>
+    </Container>
   );
 };

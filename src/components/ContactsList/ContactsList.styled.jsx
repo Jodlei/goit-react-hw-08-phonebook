@@ -3,6 +3,8 @@ import styled from 'styled-components';
 export const ContactList = styled.ul`
   width: 500px;
   min-height: 250px;
+  margin-left: auto;
+  margin-right: auto;
 `;
 
 export const ContactItem = styled.li`

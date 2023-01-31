@@ -1,30 +1,46 @@
+import { TextField, Typography, Container } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { setFilterContacts } from 'redux/fileterSlice';
+import { setFilterContacts } from 'redux/contacts/fileterSlice';
+import styled from 'styled-components';
 
-import { FilterTitle, FilterForm, Label, Input } from './Filter.styled';
+const Form = styled.form`
+  width: 320px;
+`;
 
-export const Filter = ({ title }) => {
+export const Filter = () => {
   const dispatch = useDispatch();
 
   const handleFilter = event => {
     dispatch(setFilterContacts(event.target.value));
   };
   return (
-    <>
-      <FilterTitle>{title} </FilterTitle>
+    <Container
+      component="section"
+      maxWidth="xs"
+      sx={{
+        marginTop: '64px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+    >
+      <Typography component="h5" variant="h5">
+        Find contacts by name
+      </Typography>
 
-      <FilterForm>
-        <Label htmlFor="name">
-          Name
-          <Input
-            onChange={handleFilter}
-            type="text"
-            name="name"
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-          />
-        </Label>
-      </FilterForm>
-    </>
+      <Form autoComplete="off">
+        <TextField
+          onChange={handleFilter}
+          variant="outlined"
+          margin="normal"
+          fullWidth
+          id="email"
+          label="Filter contacts"
+          name="email"
+          autoComplete="email"
+          autoFocus
+        />
+      </Form>
+    </Container>
   );
 };
